@@ -11,17 +11,32 @@ Date: <dd/mm/yyyy>
 
 # import Relevant Librares
 import RPi.GPIO as GPIO
+import time
 
 # Logic that you write
-def main():
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(7, GPIO.IN)
-    GPIO.input(7)
-    if GPIO.input(7):
-        print("input was high")
-    else:
-        print("input was low")
+    #set pin mode to board
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(7, GPIO.IN)
+GPIO.setup(11, GPIO.IN) 
+def increment(channel):
+    print("button pressed")
 
+
+GPIO.add_event_detect(11, GPIO.RISING, callback=increment, bouncetime=300)
+
+def main():
+    count = 0
+    #check button click
+    while count < 8:
+        if GPIO.input(7):
+            print("input was high")
+            time.sleep(1)
+        else:
+            print("input was low")
+            time.sleep(1)
+        if GPIO.event_detected(11):
+            print('Button pressed' + str(count))
+            count += 1
 
 # Only run the functions if
 if __name__ == "__main__":
