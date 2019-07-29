@@ -16,15 +16,17 @@ import time
 # Logic that you write
     #set pin mode to board
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(7, GPIO.OUT)
+GPIO.setup(7, GPIO.IN)
 GPIO.setup(11, GPIO.IN) 
-GPIO.setup(13, GPIO.IN) 
+GPIO.setup(13, GPIO.OUT) 
+GPIO.setup(15, GPIO.OUT)
+GPIO.setup(16, GPIO.OUT)  
 def increment(channel):
     print("button pressed")
 
 
-GPIO.add_event_detect(11, GPIO.RISING, callback=increment, bouncetime=300)
-GPIO.add_event_detect(13, GPIO.RISING, bouncetime=300)
+GPIO.add_event_detect(7, GPIO.RISING, bouncetime=300)
+GPIO.add_event_detect(11, GPIO.RISING, bouncetime=300)
 
 def main():
     count = 0
@@ -38,12 +40,17 @@ def main():
 #        else:
 #            print("input was low")
 #            time.sleep(1)
-        if GPIO.event_detected(11):
-            print('Button pressed' + str(count))
+        if GPIO.event_detected(7):
+            #print('Button pressed' + str(count))
             count += 1
-        if GPIO.event_detected(13):
-            print('Button pressed' + str(count))
+#            print(count)
+	if GPIO.event_detected(11):
+            #print('Button pressed' + str(count))
             count -= 1
+#	    print(count)
+	#set count 8 to 0
+	if count > 7:
+	    count = 0
 	#set negative count to max(7)
 	if count < 0:
 	    count = 7
@@ -53,7 +60,9 @@ def main():
 	pout0 = int(bcount[0])
 	pout1 = int(bcount[1])
 	pout2 = int(bcount[2])
-	GPIO.output(7,pout0)
+	GPIO.output(13,pout0)
+	GPIO.output(15,pout1)
+	GPIO.output(16,pout2)
 # Only run the functions if
 if __name__ == "__main__":
     # Make sure the GPIO is stopped correctly
